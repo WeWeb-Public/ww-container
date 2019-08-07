@@ -39,8 +39,8 @@ export default {
             // }
 
             try {
-                height = this.wwObject.style.height.v;
-                unit = this.wwObject.style.height.u;
+                height = this.wwObject.style.height.get({ original: true }).v;
+                unit = this.wwObject.style.height.get({ original: true }).u;
             } catch (error) {
                 // height = 'auto';
                 // unit = px
@@ -189,13 +189,20 @@ export default {
             wwLib.wwObjectHover.removeLock();
         },
         getMinHeight() {
-            return this.wwObject.style.height || new wwLib.wwTypes.ValueUnit('0%');
+            return this.wwObject.style.height ? this.wwObject.style.height.value : new wwLib.wwTypes.ValueUnit('60px');
         },
-        setMinHeight(value) {
+        setMinHeight(value, screens) {
             if (!this.wwObject.style.height) {
-                this.wwObject.style.height = new wwLib.wwTypes.ValueUnit('0%');
+                this.wwObject.style.height = new wwLib.wwTypes.ResponsiveDevice(new wwLib.wwTypes.ValueUnit('60px'));
             }
-            this.wwObject.style.height.value = value;
+
+            for (let screen of screens) {
+                const oldValue = this.wwObject.style.height.get({ screen });
+                const newValue = new wwLib.wwTypes.ValueUnit('60px')
+                newValue.value = value;
+                this.wwObject.style.height.set(newValue, { screen });
+            }
+
             this.wwObjectCtrl.update(this.wwObject);
         }
         /* wwManager:end */
