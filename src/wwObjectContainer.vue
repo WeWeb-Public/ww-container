@@ -4,6 +4,7 @@
         <div class="ww-container-tab">
             <span class="wwi wwi-article"></span>
         </div>
+        <div class="ww-container-borders"></div>
         <!-- wwManager:end -->
         <wwObject class="ww-container-bg" :ww-object="wwObject.data.background" ww-category="background" ww-inside-ww-object="ww-container"></wwObject>
         <wwLayoutColumn tag="div" ww-default="ww-image" :ww-list="wwObject.data.wwObjects" class="ww-contaiter-layout" @ww-add="wwAdd(wwObject.data.wwObjects, $event)" @ww-remove="wwRemove(wwObject.data.wwObjects, $event)">
@@ -97,6 +98,38 @@ export default {
         async edit() {
             wwLib.wwObjectHover.setLock(this);
 
+            let editList = {
+                VERTICAL_ALIGN: {
+                    separator: {
+                        en: 'Configuration',
+                        fr: 'Configuration'
+                    },
+                    title: {
+                        en: 'Vertical align',
+                        fr: 'Alignement vertical'
+                    },
+                    desc: {
+                        en: 'Set content at the top, center or bottom of the container',
+                        fr: 'Placer le contenu en haut, au centre ou en bas du conteneur'
+                    },
+                    icon: 'wwi wwi-config',
+                    shortcut: 'c',
+                    next: 'WWCONTAINER_EDIT'
+                }
+            }
+
+            wwLib.wwPopups.addStory('WWGRID_EDIT', {
+                title: {
+                    en: 'Edit Grid',
+                    fr: 'Editer la grille'
+                },
+                type: 'wwPopupEditWwObject',
+                buttons: null,
+                storyData: {
+                    list: editList
+                }
+            })
+
 
             wwLib.wwPopups.addStory('WWCONTAINER_EDIT', {
                 title: {
@@ -159,7 +192,7 @@ export default {
             });
 
             let options = {
-                firstPage: 'WWCONTAINER_EDIT',
+                firstPage: 'WWGRID_EDIT',
                 data: {
                     wwObject: this.wwObject
                 }
@@ -208,7 +241,6 @@ export default {
         /* wwManager:end */
     },
     created() {
-        console.log(this);
         if (!this.wwObject.data.background) {
             this.wwObject.data.background = wwLib.wwObject.getDefault({ type: 'ww-color' });
             this.wwObjectCtrl.update(this.wwObject);
@@ -242,6 +274,19 @@ export default {
     }
 }
 /* wwManager:start */
+.ww-container-borders {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid #03a9f457;
+}
+.ww-editing .ww-container-borders {
+    display: block;
+}
+
 .ww-container-tab {
     display: none;
     position: absolute;
