@@ -7,7 +7,7 @@
         <div class="ww-container-borders"></div>
         <!-- wwManager:end -->
         <wwObject class="ww-container-bg" :ww-object="wwObject.data.background" ww-category="background" ww-inside-ww-object="ww-container"></wwObject>
-        <wwLayoutColumn tag="div" ww-default="ww-image" :ww-list="wwObject.data.wwObjects" class="ww-contaiter-layout" @ww-add="wwAdd(wwObject.data.wwObjects, $event)" @ww-remove="wwRemove(wwObject.data.wwObjects, $event)">
+        <wwLayoutColumn tag="div" ww-default="ww-image" :ww-list="wwObject.data.wwObjects" class="ww-contaiter-layout" :ww-align="c_style.alignItems" @ww-add="wwAdd(wwObject.data.wwObjects, $event)" @ww-remove="wwRemove(wwObject.data.wwObjects, $event)">
             <wwObject v-for="wwObj in wwObject.data.wwObjects" :key="wwObj.uniqueId" :ww-object="wwObj" ww-inside-ww-object="ww-container"></wwObject>
         </wwLayoutColumn>
     </div>
@@ -30,6 +30,10 @@ export default {
             return this.wwObjectCtrl.get();
         },
         c_height() {
+            if (this.wwAttrs.wwInsideWwObject && this.wwAttrs.wwInsideWwObject == 'ww-grid') {
+                return '';
+            }
+
             let height = 60;
             let unit = 'px'
 
@@ -296,11 +300,11 @@ export default {
     background-color: #d02e7c;
     z-index: 51;
     color: white;
-    height: 40px;
-    width: 40px;
+    height: 20px;
+    width: 20px;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 12px;
     pointer-events: all;
 }
 .ww-editing .ww-container-tab {
